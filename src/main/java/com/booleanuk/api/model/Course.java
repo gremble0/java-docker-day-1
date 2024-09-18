@@ -2,9 +2,11 @@ package com.booleanuk.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -12,7 +14,7 @@ public class Course {
   private String code;
 
   @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL)
-  // @JsonIgnoreProperties("courses")
+  @JsonIgnoreProperties("courses")
   private Set<Student> students;
 
   public void update(Course other) {

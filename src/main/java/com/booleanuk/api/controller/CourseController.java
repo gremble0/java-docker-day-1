@@ -1,7 +1,6 @@
 package com.booleanuk.api.controller;
 
 import com.booleanuk.api.model.Course;
-import com.booleanuk.api.model.Student;
 import com.booleanuk.api.repository.CourseRepository;
 import com.booleanuk.api.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,40 +15,43 @@ import java.util.List;
 @RequestMapping("courses")
 public class CourseController {
   @Autowired
-  private CourseRepository repository;
+  private CourseRepository courseRepository;
+
+  @Autowired
+  private StudentRepository studentRepository;
 
   @GetMapping
   public ResponseEntity<List<Course>> get() {
-    return ResponseEntity.ok(repository.findAll());
+    return ResponseEntity.ok(courseRepository.findAll());
   }
 
-  @GetMapping("{id}")
-  public ResponseEntity<Course> get(@PathVariable int id) {
-    return ResponseEntity.ok(this.repository.findById(id)
+  @GetMapping("{code}")
+  public ResponseEntity<Course> get(@PathVariable String code) {
+    return ResponseEntity.ok(this.courseRepository.findById(code)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
   }
 
   @PostMapping
   public ResponseEntity<Course> post(@RequestBody Course course) {
     return ResponseEntity.status(HttpStatus.CREATED)
-        .body(this.repository.save(course));
+        .body(this.courseRepository.save(course));
   }
 
-  @PutMapping("{id}")
-  public ResponseEntity<Course> put(@PathVariable int id, @RequestBody Course course) {
-    return this.repository.findById(id).map(existing -> {
+  @PutMapping("{code}")
+  public ResponseEntity<Course> put(@PathVariable String code, @RequestBody Course course) {
+    return this.courseRepository.findById(code).map(existing -> {
       existing.update(course);
-      return ResponseEntity.status(HttpStatus.CREATED).body(this.repository.save(existing));
+      return ResponseEntity.status(HttpStatus.CREATED).body(this.courseRepository.save(existing));
     }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
-  @DeleteMapping("{id}")
-  public ResponseEntity<Course> delete(@PathVariable int id) {
-    var existing = this.repository.findById(id);
+  @DeleteMapping("{code}")
+  public ResponseEntity<Course> delete(@PathVariable String code) {
+    var existing = this.courseRepository.findById(code);
     if (existing.isEmpty())
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-    this.repository.deleteById(id);
+    this.courseRepository.deleteById(code);
     return ResponseEntity.ok(existing.get());
   }
 }

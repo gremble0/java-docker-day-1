@@ -2,9 +2,11 @@ package com.booleanuk.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "students")
 public class Student {
@@ -19,7 +21,7 @@ public class Student {
   private String lastName;
 
   @Column(nullable = false)
-  private String birthDay;
+  private String birthday;
 
   @Column(nullable = false)
   private String courseStartDate;
@@ -33,14 +35,13 @@ public class Student {
       joinColumns = @JoinColumn(name = "student_id"),
       inverseJoinColumns = @JoinColumn(name = "course_id")
   )
-  //@JsonIgnoreProperties("students")
+  @JsonIgnoreProperties("students")
   private Set<Course> courses;
 
   public void update(Student other) {
     this.firstName = other.firstName;
     this.lastName = other.lastName;
-    this.courseTitle = other.courseTitle;
-    this.birthDay = other.birthDay;
+    this.birthday = other.birthday;
     this.courseStartDate = other.courseStartDate;
     this.averageGrade = other.averageGrade;
   }

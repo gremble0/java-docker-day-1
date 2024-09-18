@@ -26,4 +26,13 @@ public class Student {
 
   @Column(nullable = false)
   private double averageGrade;
+
+  public void update(Student other) {
+    this.firstName = other.firstName;
+    this.lastName = other.lastName;
+    this.courseTitle = other.courseTitle;
+    this.birthDay = other.birthDay;
+    this.courseStartDate = other.courseStartDate;
+    this.averageGrade = other.averageGrade;
+  }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -33,6 +34,9 @@ public class CourseController {
 
   @PostMapping
   public ResponseEntity<Course> post(@RequestBody Course course) {
+    course.getStudents()
+        .forEach(student -> this.studentRepository.save(student));
+
     return ResponseEntity.status(HttpStatus.CREATED)
         .body(this.courseRepository.save(course));
   }

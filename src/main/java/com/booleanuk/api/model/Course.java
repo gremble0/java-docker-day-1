@@ -2,11 +2,14 @@ package com.booleanuk.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Objects;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -19,5 +22,24 @@ public class Course {
 
   public void update(Course other) {
     this.students = other.students;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Course course)) return false;
+    return Objects.equals(this.getCode(), course.getCode());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.getCode());
+  }
+
+  @Override
+  public String toString() {
+    return "Course{" +
+        "code='" + this.code + '\'' +
+        '}';
   }
 }

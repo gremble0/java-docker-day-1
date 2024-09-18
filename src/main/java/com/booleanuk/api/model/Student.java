@@ -3,7 +3,7 @@ package com.booleanuk.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -19,9 +19,6 @@ public class Student {
   private String lastName;
 
   @Column(nullable = false)
-  private String courseTitle;
-
-  @Column(nullable = false)
   private String birthDay;
 
   @Column(nullable = false)
@@ -30,9 +27,14 @@ public class Student {
   @Column(nullable = false)
   private double averageGrade;
 
-  @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
-  @JsonIgnoreProperties("students")
-  private List<Course> courses;
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(
+      name = "student_courses",
+      joinColumns = @JoinColumn(name = "student_id"),
+      inverseJoinColumns = @JoinColumn(name = "course_id")
+  )
+  //@JsonIgnoreProperties("students")
+  private Set<Course> courses;
 
   public void update(Student other) {
     this.firstName = other.firstName;

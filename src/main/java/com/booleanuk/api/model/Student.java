@@ -1,6 +1,9 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -26,6 +29,10 @@ public class Student {
 
   @Column(nullable = false)
   private double averageGrade;
+
+  @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+  @JsonIgnoreProperties("students")
+  private List<Course> courses;
 
   public void update(Student other) {
     this.firstName = other.firstName;
